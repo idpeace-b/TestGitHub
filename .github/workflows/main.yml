@@ -14,9 +14,9 @@ on:
           - prod
 
       test_classes:
-        description: "Comma-separated test classes"
-        required: true
-        default: "AccountTriggerTest"
+        description: "Comma-separated test classes (required for SIT/UAT/PROD)"
+        required: false
+        default: ""
 
 jobs:
   deploy:
@@ -80,27 +80,60 @@ jobs:
       - name: Validate Deployment
         run: |
           if grep -q '<members>' delta/package/package.xml; then
-            sf project deploy validate \
-              --manifest delta/package/package.xml \
-              --target-org target-org \
-              --test-level RunSpecifiedTests \
-              --tests "${{ github.event.inputs.test_classes }}" \
-              --wait 60
+
+            if [ "${{ github.event.inputs.environment }}" == "develop" ]; then
+
+              sf project deploy validate \
+                --manifest delta/package/package.xml \
+                --target-org target-org \
+                --test-level NoTestRun \
+                --wait 60
+
+            else
+
+              if [ -z "${{ github.event.inputs.test_classes }}" ]; then
+                echo "ERROR: test_classes is required for SIT/UAT/PROD"
+                exit 1
+              fi
+
+              sf project deploy validate \
+                --manifest delta/package/package.xml \
+                --target-org target-org \
+                --test-level RunSpecifiedTests \
+                --tests "${{ github.event.inputs.test_classes }}" \
+                --wait 60
+
+            fi
+
           else
-            echo "No Salesforce metadata changes found."
+            echo "No SF metadata changes found."
           fi
 
       - name: Deploy Delta
         run: |
           if grep -q '<members>' delta/package/package.xml; then
-            sf project deploy start \
-              --manifest delta/package/package.xml \
-              --target-org target-org \
-              --test-level RunSpecifiedTests \
-              --tests "${{ github.event.inputs.test_classes }}" \
-              --wait 60
+
+            if [ "${{ github.event.inputs.environment }}" == "develop" ]; then
+
+              sf project deploy start \
+                --manifest delta/package/package.xml \
+                --target-org target-org \
+                --test-level NoTestRun \
+                --wait 60
+
+            else
+
+              sf project deploy start \
+                --manifest delta/package/package.xml \
+                --target-org target-org \
+                --test-level RunSpecifiedTests \
+                --tests "${{ github.event.inputs.test_classes }}" \
+                --wait 60
+
+            fi
+
           else
-            echo "No Salesforce metadata changes found."
+            echo "No SF metadata changes found."
           fi
 
       - name: Deploy Destructive Changes
@@ -108,13 +141,26 @@ jobs:
           if [ -f "delta/destructiveChanges/destructiveChanges.xml" ] && \
              grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml; then
 
-            sf project deploy start \
-              --manifest delta/destructiveChanges/package.xml \
-              --post-destructive-changes delta/destructiveChanges/destructiveChanges.xml \
-              --target-org target-org \
-              --test-level RunSpecifiedTests \
-              --tests "${{ github.event.inputs.test_classes }}" \
-              --wait 60
+            if [ "${{ github.event.inputs.environment }}" == "develop" ]; then
+
+              sf project deploy start \
+                --manifest delta/destructiveChanges/package.xml \
+                --post-destructive-changes delta/destructiveChanges/destructiveChanges.xml \
+                --target-org target-org \
+                --test-level NoTestRun \
+                --wait 60
+
+            else
+
+              sf project deploy start \
+                --manifest delta/destructiveChanges/package.xml \
+                --post-destructive-changes delta/destructiveChanges/destructiveChanges.xml \
+                --target-org target-org \
+                --test-level RunSpecifiedTests \
+                --tests "${{ github.event.inputs.test_classes }}" \
+                --wait 60
+
+            fi
 
           else
             echo "No destructive changes found."
