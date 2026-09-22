@@ -67,9 +67,15 @@ jobs:
         run: |
           mkdir -p delta
 
+          git fetch --all
+
+          BASE_COMMIT=$(git merge-base HEAD origin/${{ github.event.inputs.environment }})
+
+          echo "Base Commit: $BASE_COMMIT"
+
           sf sgd source delta \
+            --from $BASE_COMMIT \
             --to HEAD \
-            --from HEAD~1 \
             --output-dir delta \
             --source-dir force-app \
             --generate-delta
