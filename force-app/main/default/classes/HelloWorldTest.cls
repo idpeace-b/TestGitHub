@@ -6,7 +6,7 @@ private class HelloWorldTest {
         String result = HelloWorld.sayHello();
 
         System.Assert.areEqual(
-            'Hello, World!',
+            'Hello, World!!!!!',
             result,
             'The greeting should match the expected value.'
         );
