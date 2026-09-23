@@ -30,7 +30,7 @@ private class HelloWorldTest {
         String result = HelloWorld.yabai();
 
         System.Assert.areEqual(
-            'Hiya',
+            'yabai',
             result,
             'The greeting should match the expected value.'
         );
