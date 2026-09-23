@@ -12,4 +12,15 @@ private class HelloWorldTest {
         );
     }
 
+
+    @IsTest
+    static void testHiya() {
+        String result = HelloWorld.sayHiya();
+
+        System.Assert.areEqual(
+            'Hiya',
+            result,
+            'The greeting should match the expected value.'
+        );
+    }
 }
