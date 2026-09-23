@@ -4,4 +4,7 @@ public class HelloWorld {
         return 'Hello, World!!!!!';
     }
 
+    public static Sting sayHiya() {
+        return 'Hiya';
+    }
 }
