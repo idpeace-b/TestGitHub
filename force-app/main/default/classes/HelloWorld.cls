@@ -4,7 +4,7 @@ public class HelloWorld {
         return 'Hello, World!!!!!';
     }
 
-    public static Sting sayHiya() {
+    public static String sayHiya() {
         return 'Hiya';
     }
 }
