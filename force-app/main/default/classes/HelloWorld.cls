@@ -10,8 +10,8 @@ public class HelloWorld {
         return 'Hiya';
     }
 
-    public static String helloAbhishek(){
-        return 'Hello';
-    }
+    public static String yabai() {
+        return 'yabai';
+    }    
     
 }
