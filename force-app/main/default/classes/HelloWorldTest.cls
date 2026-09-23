@@ -23,4 +23,16 @@ private class HelloWorldTest {
             'The greeting should match the expected value.'
         );
     }
+
+
+    @IsTest
+    static void testyabai() {
+        String result = HelloWorld.yabai();
+
+        System.Assert.areEqual(
+            'Hiya',
+            result,
+            'The greeting should match the expected value.'
+        );
+    }
 }
