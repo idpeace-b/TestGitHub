@@ -35,8 +35,7 @@ jobs:
           sf --version
 
       - name: Install sfdx-git-delta
-        run: |
-          echo y | sf plugins install sfdx-git-delta
+        run: echo y | sf plugins install sfdx-git-delta
 
       - name: Set Environment Variables
         run: |
@@ -72,32 +71,7 @@ jobs:
 
           BASE_COMMIT=$(git merge-base HEAD origin/${{ github.event.inputs.environment }})
 
-          echo "========================================"
-          echo "Current Branch"
-          git branch --show-current
-
-          echo "========================================"
-          echo "Target Environment Branch"
-          echo "${{ github.event.inputs.environment }}"
-
-          echo "========================================"
-          echo "BASE_COMMIT"
-          echo "$BASE_COMMIT"
-
-          echo "========================================"
-          echo "HEAD"
-          git rev-parse HEAD
-
-          echo "========================================"
-          echo "Commits in Delta"
-          git log --oneline ${BASE_COMMIT}..HEAD
-
-          echo "========================================"
-          echo "Files Changed"
-          git diff --name-only ${BASE_COMMIT} HEAD
-
-          echo "========================================"
-          echo "Generating Delta"
+          echo "Base Commit: $BASE_COMMIT"
 
           sf sgd source delta \
             --from $BASE_COMMIT \
@@ -106,9 +80,7 @@ jobs:
             --source-dir force-app \
             --generate-delta
 
-          echo "========================================"
-          echo "Generated Package"
-
+          echo "====== Delta Package ======"
           cat delta/package/package.xml
 
       - name: Validate Deployment
