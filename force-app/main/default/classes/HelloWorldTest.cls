@@ -26,11 +26,11 @@ private class HelloWorldTest {
 
 
     @IsTest
-    static void testAbhishek() {
-        String result = HelloWorld.helloAbhishek();
+    static void testyabai() {
+        String result = HelloWorld.yabai();
 
         System.Assert.areEqual(
-            'Hello',
+            'Hiya',
             result,
             'The greeting should match the expected value.'
         );
