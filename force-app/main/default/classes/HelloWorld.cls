@@ -7,4 +7,9 @@ public class HelloWorld {
     public static String sayHiya() {
         return 'Hiya';
     }
+
+    public static String helloAbhishek(){
+        return 'Hello';
+    }
+    
 }

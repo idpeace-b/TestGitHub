@@ -23,4 +23,16 @@ private class HelloWorldTest {
             'The greeting should match the expected value.'
         );
     }
+
+
+    @IsTest
+    static void testAbhishek() {
+        String result = HelloWorld.helloAbhishek();
+
+        System.Assert.areEqual(
+            'Hello',
+            result,
+            'The greeting should match the expected value.'
+        );
+    }
 }
